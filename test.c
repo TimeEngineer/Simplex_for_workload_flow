@@ -20,8 +20,8 @@ int main() {
 	printf("B =\n");
 	for (i = 0 ; i < N ; i++) {
 		printf("[ ");
-		// X[i] = ((float)rand())/(float)(RAND_MAX) * 100.0;
-		X[i] = (float) i + 1;
+		X[i] = ((float)rand())/(float)(RAND_MAX) * 100.0;
+		// X[i] = (float) i + 1;
 		B[i] = (int *) malloc(N * sizeof(int));
 		for (j = 0 ; j < N ; j++) {
 			if ((i+j) % 2) {
