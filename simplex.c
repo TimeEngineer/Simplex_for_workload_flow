@@ -76,7 +76,7 @@ int find_basis_variable(float ** table, int nb_line, int column) {
 	return index;
 }
 
-// #ifdef PRINT
+#ifdef PRINT
 void print_table(float ** table, int nb_line, int nb_column, int species, int pivot_line, int pivot_column) {
 	int i, j;
 	printf("\nThe table is\n");
@@ -105,7 +105,7 @@ void print_table(float ** table, int nb_line, int nb_column, int species, int pi
 	}
 	printf("\n");
 }
-// #endif
+#endif
 
 void print_vector(char * name, float * vector, int len) {
 	int i;
@@ -177,14 +177,11 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 	int nb_column = nb_var + nb_line;
 	float ** table = (float **) malloc(nb_line * sizeof(float *));
 	for (i = 0 ; i < nb_line ; i ++) {
-		table[i] = (float *) malloc(nb_column * sizeof(float));
+		table[i] = (float *) calloc(nb_column, sizeof(float));
 		for (j = 0 ; j < nb_column ; j++) {
 			if (j >= nb_var && j < nb_column - 2 && i < nb_line - 2) { // Identity
 				if (i == j - nb_var) {
 					table[i][j] = 1.0;
-				}
-				else {
-					table[i][j] = 0.0;
 				}
 			}
 			else if (j == nb_column - 1) { // Last column
@@ -203,9 +200,6 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 			else if (j == nb_column - 2) { // Temporary column
 				table[i][j] = -1.0;
 			}
-			else {
-				table[i][j] = 0.0;
-			}
 		}
 	}
 	for (i = 0 ; i < n ; i++) { // Main block
@@ -223,9 +217,9 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 			}
 		}
 	}
-	int * basis = (int *) malloc((nb_line-2)*sizeof(int));
+	int * basis = (int *) calloc(nb_line-2, sizeof(int));
 	for (i = 0 ; i < nb_line-2 ; i++) {
-		basis[i] = i + nb_var;
+		basis[i] = i + nb_line-2;
 	}
 	#ifdef PRINT
 	print_table(table, nb_line, nb_column, 2, -1, -1);
@@ -372,7 +366,7 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 		free(table[i]);
 	} free(table);
 
-	// // Initialization of the output
+	// Initialization of the output
 	float ** alpha = (float **) malloc(n * sizeof(float *));
 	k = 0;
 	for (i = 0 ; i < n ; i++) {

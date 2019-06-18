@@ -3,10 +3,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#define N 4
 #define ERROR 1.0e-6
-#define PRINT
-#define ABS(a) ({a < 0 ? -a : a;})
+// #define PRINT
 
 float ** simplex_procedure(float * X, int ** B, int n);
 void print_vector(char * name, float * vector, int len);

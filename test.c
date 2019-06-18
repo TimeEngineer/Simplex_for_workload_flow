@@ -1,5 +1,6 @@
 #include "simplex.h"
 #include <time.h>
+#define N 60
 
 float average(float * vector, int len) {
 	int i;
