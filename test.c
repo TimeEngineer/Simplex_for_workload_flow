@@ -1,6 +1,6 @@
 #include "simplex.h"
 #include <time.h>
-#define N 60
+#define N 12
 
 float average(float * vector, int len) {
 	int i;
@@ -41,8 +41,16 @@ int main() {
 		X[i] -= avg;
 	}
 	print_vector("X", X, N);
-	float ** alpha = simplex_procedure(X, B, N);
 
+/* -------------------------------------------------- */
+	printf("start of the procedure\n");
+	clock_t begin = clock();
+	float ** alpha = simplex_procedure(X, B, N);
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time spent is : %.9lf\n", time_spent);
+/* -------------------------------------------------- */
+	
 	printf("\nThe solution is :\n");
 	print_matrix("a", alpha, N, N);
 
