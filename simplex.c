@@ -65,6 +65,29 @@ void pivot(float ** table, int nb_line, int nb_column, int * line, int * column,
 	}
 }
 
+void pivot_bland(float ** table, int nb_line, int nb_column, int * line, int * column, int species) {
+	*line = -1;
+	*column = -1;
+	int i, j;
+	float max = ERROR, min = 1e38;
+	// Find the best column
+	for (j = 0 ; j < nb_column+species-3 ; j++) {
+		if (table[nb_line-species][j] > max) {
+			*column = j;
+			break;
+		}
+	}
+	if (*column == -1) { return; }
+	// Find the best line
+	for (i = 0 ; i < nb_line-2 ; i++) {
+		float ratio = table[i][nb_column-1]/table[i][*column];
+		if (table[i][*column] > ERROR && ratio < min) {
+			min = ratio;
+			*line = i;
+		}
+	}
+}
+
 // Find in the basis which index contains the column
 int find_basis_line(int * basis, int len, int column) {
 	int i;
@@ -152,6 +175,9 @@ void print_basis(char * name, int * vector, int len) {
 
 // Initialize the table for the problem
 float ** initialize_table(int n, int nb_line, int nb_column, int nb_var, float * X, int ** B) {
+	printf("start of the procedure\n");
+	clock_t begin = clock();
+
 	int i, j, k = 0;
 	float ** table = (float **) malloc(nb_line * sizeof(float *));
 	for (i = 0 ; i < nb_line ; i ++) {
@@ -195,6 +221,11 @@ float ** initialize_table(int n, int nb_line, int nb_column, int nb_var, float *
 			}
 		}
 	}
+
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time0 spent is : %.9lf\n", time_spent);
+
 	return table;
 }
 
@@ -241,6 +272,9 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 			 "------------------------------\n");
 	#endif
 
+	printf("start of the procedure\n");
+	clock_t begin = clock();
+
 	// Find the index which contains the minimum value in the last column 
 	k = index_min_by_column(table, nb_line, nb_column-1);
 
@@ -259,6 +293,10 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 	print_table(table, nb_line, nb_column, 2, -1, -1);
 	print_basis("basis", basis, nb_line-2);
 	#endif
+
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time1 spent is : %.9lf\n", time_spent);
 	
 	// STEP 2 : SIMPLEX
 	#ifdef PRINT
@@ -267,8 +305,11 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 			 "-------------------\n");
 	#endif
 
+	printf("start of the procedure\n");
+	begin = clock();
+
 	while (1) {
-		pivot(table, nb_line, nb_column, &i, &j, 2);
+		pivot_bland(table, nb_line, nb_column, &i, &j, 2);
 		if (i == -1) { break; }
 
 		#ifdef PRINT
@@ -292,12 +333,19 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 		#endif
 	}
 
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time2 spent is : %.9lf\n", time_spent);
+
 	// STEP 3 : INITIALIZATION
 	#ifdef PRINT
 	printf("\n--------------------------\n"
 			 "----- INITIALIZATION -----\n"
 			 "--------------------------\n");
 	#endif
+
+	printf("start of the procedure\n");
+	begin = clock();
 
 	// Determine if the column nb_column-2 is in the basis
 	i = find_basis_line(basis, nb_line-2, nb_column-2);
@@ -345,6 +393,10 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 	print_table(table, nb_line, nb_column, 1, -1, -1);
 	#endif
 
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time3 spent is : %.9lf\n", time_spent);
+
 	// STEP 4 : SIMPLEX
 	#ifdef PRINT
 	printf("\n-------------------\n"
@@ -352,8 +404,11 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 			 "-------------------\n");
 	#endif
 
+	printf("start of the procedure\n");
+	begin = clock();
+
 	while (1) {
-		pivot(table, nb_line, nb_column, &i, &j, 1);
+		pivot_bland(table, nb_line, nb_column, &i, &j, 1);
 		if (i == -1) { break; }
 
 		#ifdef PRINT
@@ -377,12 +432,19 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 		#endif
 	}
 
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time4 spent is : %.9lf\n", time_spent);
+
 	// STEP 5 : SOLUTION
 	#ifdef PRINT
 	printf("\n--------------------\n"
 			 "----- SOLUTION -----\n"
 			 "--------------------\n");
 	#endif
+
+	printf("start of the procedure\n");
+	begin = clock();
 
 	// Get the solution of the problem
 	float * x = (float *) calloc(nb_var, sizeof(float));
@@ -417,5 +479,9 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 		}
 	}
 	free(x);
+
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time5 spent is : %.9lf\n", time_spent);
 	return alpha;
 }

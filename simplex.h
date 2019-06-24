@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #define ERROR 1.0e-6
 // #define PRINT
 
