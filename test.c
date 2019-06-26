@@ -1,8 +1,8 @@
 #include "simplex.h"
 #include <time.h>
-#define PRINT
-// #define MEASURE
-#define N 4
+// #define PRINT
+#define MEASURE
+#define N 1024
 
 float average(float * vector, int len) {
 	int i;
@@ -33,7 +33,7 @@ int main() {
 		X[i] = (float) i + 1;
 		B[i] = (int *) malloc(N * sizeof(int));
 		for (j = 0 ; j < N ; j++) {
-			if ((i+j) % 2) {
+			if ((i+j) % 256 == 255) {
 				B[i][j] = 1;
 				#ifdef PRINT
 				printf("1 ");

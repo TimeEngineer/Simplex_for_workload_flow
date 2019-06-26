@@ -309,7 +309,7 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 	begin = clock();
 
 	while (1) {
-		pivot_bland(table, nb_line, nb_column, &i, &j, 2);
+		pivot(table, nb_line, nb_column, &i, &j, 2);
 		if (i == -1) { break; }
 
 		#ifdef PRINT
@@ -408,7 +408,7 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 	begin = clock();
 
 	while (1) {
-		pivot_bland(table, nb_line, nb_column, &i, &j, 1);
+		pivot(table, nb_line, nb_column, &i, &j, 1);
 		if (i == -1) { break; }
 
 		#ifdef PRINT

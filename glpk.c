@@ -2,7 +2,7 @@
 #include <stdlib.h>           /* C standard library                   */
 #include <glpk.h>             /* GNU GLPK linear/mixed integer solver */
 
-#define N 256
+#define N 1024
 
 void print_matrix(char * name, double ** matrix, int nb_line, int nb_column) {
 	int i, j;
@@ -44,17 +44,19 @@ int ** init_B(int n, int * nb_var, int * count) {
 	*nb_var = 0, *count = 0;
 	int ** B = (int **) malloc(n * sizeof(int *));
 	for (i = 0 ; i < n ; i++) {
-		B[i] = (int *) malloc(n * sizeof(int));
-		for (j = 0 ; j < n ; j++) {
-			if ((i+j) % 2) {
+		B[i] = (int *) calloc(n, sizeof(int));
+	}
+	for (i = 0 ; i < n-1 ; i++) {
+		for (j = i+1 ; j < n ; j++) {
+			if (j < i+11) {
 				B[i][j] = 1;
-				if (i < n-1) {
-					*count += 1;
+				B[j][i] = 1;
+				if (j < n-1) {
+					*count += 2;
 				} else {
+					*count += 1;
 					*nb_var += 1;
 				}
-			} else {
-				B[i][j] = 0;
 			}
 		}
 	}
@@ -100,8 +102,8 @@ double * init_X(int n) {
 	int i;
 	double * X = (double *) malloc(n * sizeof(double));
 	for (i = 0 ; i < n ; i++) {
-		// X[i] = ((float)rand())/(float)(RAND_MAX) * 100.0;
-		X[i] = (double) i + 1;
+		X[i] = ((double)rand())/((double)RAND_MAX)*100.0;
+		// X[i] = (double) i + 1;
 	}
 	double avg = average(X, n);
 	for (i = 0 ; i < n ; i++) {
@@ -116,7 +118,9 @@ int main(void) {
 	int i, j, k = 0;
 	int nb_var, count;
 	int nb_line = 2*(N-1);
-
+	time_t t;
+	srand((unsigned) time(&t));	
+	
 	int ** B = init_B(N, &nb_var, &count);
 	double * X = init_X(N);
 	printf("nb_var = %d, count = %d\n", nb_var, count);
@@ -126,13 +130,19 @@ int main(void) {
 
 	double ** table = init_table(B, N, nb_line, nb_var);
 
+	// for (i = 0 ; i < N ; i++) {
+	//  	for (j = 0 ; j < N ; j++) {
+	//  		printf("%d", B[i][j]);
+	//  	} printf("\n");
+	// } printf("\n");
+
 	// print_matrix("table", table, nb_line, nb_var);
 	// print_vector("X", X, N);
 
 	/* declare variables */
 	glp_prob *lp;
-	int ia[1+131000], ja[1+131000];
-	double ar[1+131000], z;
+	int ia[1+count], ja[1+count];
+	double ar[1+count], z;
 	/* create problem */
 	lp = glp_create_prob();
 	glp_set_prob_name(lp, "partition optimizer");
@@ -175,7 +185,7 @@ int main(void) {
 
 	glp_load_matrix(lp, count, ia, ja, ar);
 	/* solve problem */
-	glp_simplex(lp, NULL);
+	glp_simplex(lp,NULL);
 	/* recover and display results */
 	z = glp_get_obj_val(lp);
 	double * x = (double *) calloc(nb_var, sizeof(double));
