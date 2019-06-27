@@ -22,7 +22,7 @@ Where :
 
 - X is a vector of normalized value of the partition
 
-- B is a matrix of boundary to know where are the neighbour of each partition
+- B is a matrix of boundary to know where are the neighbours of each partition
 
 - n is the number of partition (lenght of X and B)
 
@@ -30,10 +30,4 @@ Also there is a test included where you can choose your parameters.
 
 In order to run the test, you can write :
 
-```make```
-
-then
-
-```./main```
-
-in your terminal.
+```make && ./main```.
