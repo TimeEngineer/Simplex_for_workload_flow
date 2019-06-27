@@ -1,6 +1,6 @@
 # Simplex Algorithm for partitioning problem
 
-[logo]: https://github.com/TimeEngineer/simplex/partitioning.png "image"
+[logo]: https://github.com/TimeEngineer/simplex/blob/master/partitioning.png "image"
 
 How to use this library for partitioning :
 
