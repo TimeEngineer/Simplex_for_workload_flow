@@ -61,7 +61,7 @@ int ** init_B(int n, int * nb_var, int * count) {
 		}
 	}
 	*nb_var += *count;
-	*count <<= 2;
+	*count <<= 1;
 	return B;
 }
 
@@ -75,12 +75,10 @@ double ** init_table(int ** B, int n, int nb_line, int nb_var) {
 		for (j = 0 ; j < n ; j++) {
 			if (B[i][j]) {
 				if (i < n-1) {
-					table[i*2][k] = 1.0;
-					table[i*2+1][k] = -1.0;
+					table[i][k] = 1.0;
 				}
 				if (j < n-1) {
-					table[j*2][k] = -1.0;
-					table[j*2+1][k] = 1.0;
+					table[j][k] = -1.0;
 				}
 				k++;
 			}
@@ -117,7 +115,7 @@ double * init_X(int n) {
 int main(void) {
 	int i, j, k = 0;
 	int nb_var, count;
-	int nb_line = 2*(N-1);
+	int nb_line = N-1;
 	time_t t;
 	srand((unsigned) time(&t));	
 	
@@ -148,17 +146,13 @@ int main(void) {
 	glp_set_prob_name(lp, "partition optimizer");
 	glp_set_obj_dir(lp, GLP_MAX);
 	/* fill problem */
-	glp_add_rows(lp, 2*(N-1));
+	glp_add_rows(lp, N-1);
 
 	char name[8];
-	for (i = 1 ; i <= 2*(N-1) ; i++) {
+	for (i = 1 ; i <= N-1 ; i++) {
 		sprintf(name, "%d", i);
 		glp_set_row_name(lp, i, name);
-		if (i%2) {
-			glp_set_row_bnds(lp, i, GLP_UP, 0.0, X[(i-1)/2]);
-		} else {
-			glp_set_row_bnds(lp, i, GLP_UP, 0.0, -X[(i-1)/2]);
-		}
+		glp_set_row_bnds(lp, i, GLP_FX, X[i-1], X[i-1]);
 	}
 	
 	glp_add_cols(lp, nb_var);

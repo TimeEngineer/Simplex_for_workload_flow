@@ -1,14 +1,24 @@
 #ifndef _SIMPLEX_H_
 #define _SIMPLEX_H_
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <time.h>
+#include "matrix.h"
 #define ERROR 1.0e-6
 // #define PRINT
 
-float ** simplex_procedure(float * X, int ** B, int n);
-void print_vector(char * name, float * vector, int len);
-void print_matrix(char * name, float ** matrix, int nb_line, int nb_column);
+typedef struct Simplex {
+	int nb_var;
+	int nb_row;
+	int nb_column;
+
+	float * A;
+	float * b;
+	float * c;
+
+	float obj;
+	int * basis;
+} Simplex;
+
+void simplex_procedure(float * X, int ** B, int n);
 
 #endif
