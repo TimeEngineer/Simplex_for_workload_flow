@@ -2,9 +2,11 @@
 #define _SIMPLEX_H_
 
 #include <time.h>
+#include <math.h>
 #include "matrix.h"
-#define ERROR 1.0e-6
+#define ERROR 1.0e-2
 // #define PRINT
+#define MEASURE
 
 typedef struct Simplex {
 	int nb_var;

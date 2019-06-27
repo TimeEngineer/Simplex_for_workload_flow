@@ -1,8 +1,7 @@
 #include "simplex.h"
 #include <time.h>
-#define PRINT
-// #define MEASURE
-#define N 3
+// #define PRINT
+#define N 1024
 
 float average(float * vector, int len) {
 	int i;
@@ -63,18 +62,9 @@ int main() {
 	#endif
 
 /* -------------------------------------------------- */
-	#ifdef MEASURE
-	printf("start of the procedure\n");
-	clock_t begin = clock();
-	#endif
 
 	/*float ** alpha = */simplex_procedure(X, B, N);
 	
-	#ifdef MEASURE
-	clock_t end = clock();
-	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("time spent is : %.9lf\n", time_spent);
-	#endif
 /* -------------------------------------------------- */
 
 	#ifdef PRINT
