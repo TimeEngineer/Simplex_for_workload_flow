@@ -58,7 +58,9 @@ Simplex * init_simplex(float * X, int ** B, int n) {
 	ptr_simplex->nb_row = n-1;
 	ptr_simplex->nb_column = ptr_simplex->nb_var + ptr_simplex->nb_row;
 
-	ptr_simplex->A = (float *) calloc(ptr_simplex->nb_row * ptr_simplex->nb_column, sizeof(float));
+	printf("%d %d %d\n", ptr_simplex->nb_var, ptr_simplex->nb_row, ptr_simplex->nb_column);
+
+	// ptr_simplex->A = (float *) calloc(ptr_simplex->nb_row * ptr_simplex->nb_column, sizeof(float));
 	// Main Block
 	for (i = 0 ; i < n ; i++) {
 		for (j = 0 ; j < n ; j++) {
@@ -109,7 +111,7 @@ Simplex * init_simplex(float * X, int ** B, int n) {
 }
 
 void free_simplex(Simplex * ptr_simplex) {
-	free(ptr_simplex->A);
+	// free(ptr_simplex->A);
 	free(ptr_simplex->b);
 	free(ptr_simplex->c);
 	free(ptr_simplex->basis);
@@ -349,6 +351,6 @@ float ** simplex_procedure(float * X, int ** B, int n) {
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 	printf("time spent simplex is : %.9lf\n", time_spent);
 	#endif
-	
+
 	return solution(ptr_simplex, B, n);
 }

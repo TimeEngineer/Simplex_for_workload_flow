@@ -13,7 +13,7 @@ typedef struct Simplex {
 	int nb_row;
 	int nb_column;
 
-	float * A;
+	float A[22506000];
 	float * b;
 	float * c;
 
