@@ -51,34 +51,29 @@ int main() {
 	float * X = init_X(N);
 	int ** B = init_B(N);
 
-	#ifdef PRINT
-	for (i = 0 ; i < N ; i++) {
-	 	for (j = 0 ; j < N ; j++) {
-	 		printf("%d", B[i][j]);
-	 	} printf("\n");
-	} printf("\n");
+	// for (i = 0 ; i < N ; i++) {
+	//  	for (j = 0 ; j < N ; j++) {
+	//  		printf("%d", B[i][j]);
+	//  	} printf("\n");
+	// } printf("\n");
 
-	print_vector("X", X, N);
-	#endif
+	// print_vector("X", X, N);
 
 /* -------------------------------------------------- */
 
-	/*float ** alpha = */simplex_procedure(X, B, N);
+	float ** alpha = simplex_procedure(X, B, N);
 	
 /* -------------------------------------------------- */
 
-	#ifdef PRINT
-	// printf("\nThe solution is :\n");
 	// print_matrix("a", alpha, N, N);
-	#endif
 
 	free(X);
 	for (i = 0 ; i < N ; i++) {
 		free(B[i]);
 	} free(B);
-	// for (i = 0 ; i < N ; i++) {
-	// 	free(alpha[i]);
-	// } free(alpha);
+	for (i = 0 ; i < N ; i++) {
+		free(alpha[i]);
+	} free(alpha);
 	
 	return 0;
 }

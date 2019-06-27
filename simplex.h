@@ -21,6 +21,6 @@ typedef struct Simplex {
 	int * basis;
 } Simplex;
 
-void simplex_procedure(float * X, int ** B, int n);
+float ** simplex_procedure(float * X, int ** B, int n);
 
 #endif

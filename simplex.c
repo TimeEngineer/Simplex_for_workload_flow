@@ -218,11 +218,13 @@ void simplex_method(Simplex * ptr_simplex) {
 				sub_row_by_row_by_factor(ptr_simplex, k, i, factor);
 			}
 		}
+
 		factor = ptr_simplex->c[j];
 		for (k = 0 ; k < ptr_simplex->nb_column ; k++)
 			ptr_simplex->c[k] -= ptr_simplex->A[i * ptr_simplex->nb_column + k] * factor;
 		
 		float temp = ptr_simplex->obj - ptr_simplex->b[i] * factor;
+		// printf("%.2f %.2f\n", ptr_simplex->obj, temp);
 		if (temp < ptr_simplex->obj) {
 			flag = 1;
 			ptr_simplex->obj = temp;
@@ -238,6 +240,7 @@ void simplex_method(Simplex * ptr_simplex) {
 		#ifdef PRINT
 		print_simplex(ptr_simplex);
 		#endif
+
 	}
 }
 
@@ -274,7 +277,7 @@ void transition(Simplex * ptr_simplex) {
 	#endif
 }
 
-void solution(Simplex * ptr_simplex) {
+float ** solution(Simplex * ptr_simplex, int ** B, int n) {
 	int i, j;
 	
 	printf("\nOptimal solution found\n\n");
@@ -286,14 +289,31 @@ void solution(Simplex * ptr_simplex) {
 			x[j] = ptr_simplex->b[i];
 	}
 
+
 	#ifdef PRINT
 	print_vector("x", x, ptr_simplex->nb_var);
 	#endif
 
+	free_simplex(ptr_simplex);
+
+	float ** alpha = (float **) malloc(n * sizeof(float *));
+	int k = 0;
+	for (i = 0 ; i < n ; i++) {
+		alpha[i] = (float *) calloc(n, sizeof(float));
+		for (j = 0 ; j < n ; j++) {
+			if (B[i][j]) {
+				alpha[i][j] = x[k];
+				k++;
+			}
+		}
+	}
+
 	free(x);
+
+	return alpha;
 }
 
-void simplex_procedure(float * X, int ** B, int n) {
+float ** simplex_procedure(float * X, int ** B, int n) {
 	#ifdef MEASURE
 	clock_t begin = clock();
 	#endif
@@ -319,7 +339,16 @@ void simplex_procedure(float * X, int ** B, int n) {
 	#endif
 
 	transition(ptr_simplex);
+
+	#ifdef MEASURE
+	begin = clock();
+	#endif
 	simplex_method(ptr_simplex);
-	solution(ptr_simplex);
-	free_simplex(ptr_simplex);
+	#ifdef MEASURE
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time spent simplex is : %.9lf\n", time_spent);
+	#endif
+	
+	return solution(ptr_simplex, B, n);
 }
