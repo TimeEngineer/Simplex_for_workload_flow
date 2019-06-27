@@ -8,15 +8,23 @@ First install `glpk` library, in linux you can type :
 
 io.h contains basic input/output for matrix and vector :
 
-- void print_matrix(char * name, double ** matrix, int nb_row, int nb_column);
+- ```C
+void print_matrix(char * name, double ** matrix, int nb_row, int nb_column);
+```
 
-- void print_vector(char * name, double * vector, int len);
+- ```C
+void print_vector(char * name, double * vector, int len);
+```
 
-- void print_B(int ** B, int len);
+- ```C
+void print_B(int ** B, int len);
+```
 
 simplex.h contains the solution of your problem :
 
-- double ** simplex_procedure(double * X, int ** B, int n);
+- ```C
+double ** simplex_procedure(double * X, int ** B, int n);
+```
 
 Where :
 
