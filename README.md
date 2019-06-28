@@ -1,6 +1,6 @@
 # Simplex Algorithm for partitioning problem
 
-![alt text](https://github.com/TimeEngineer/simplex/blob/master/partitioning.png "image")
+![alt text](https://github.com/TimeEngineer/simplex/blob/master/img/partitioning.png "image")
 
 How to use this library for partitioning :
 
@@ -41,3 +41,5 @@ Also there is a test included where you can choose your parameters.
 In order to run the test, you can write :
 
 ```make && ./main```.
+
+![alt text](https://github.com/TimeEngineer/simplex/blob/master/img/demo.png "image")

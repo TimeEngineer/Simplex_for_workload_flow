@@ -14,7 +14,7 @@ $(EXEC): $(OBJ)
 	@$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
-	@$(CC) -o $@ -c $< $(CFLAGS)
+	@$(CC) -O3 -o $@ -c $< $(CFLAGS)
 
 .PHONY: clean mrproper
 

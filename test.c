@@ -3,9 +3,9 @@
 #include "simplex.h"
 
 /* PARAMETERS */
-#define NUMBER_OF_PARTITION 8
+#define NUMBER_OF_PARTITION 16
 #define NUMBER_OF_NEIGHBOUR 4 // Multiple of 2
-// #define MEASURE
+#define MEASURE
 #define PRINT
 /* ---------- */
 
