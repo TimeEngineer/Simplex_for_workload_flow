@@ -3,9 +3,9 @@
 #include "simplex.h"
 
 /* PARAMETERS */
-#define NUMBER_OF_PARTITION 4
+#define NUMBER_OF_PARTITION 8
 #define NUMBER_OF_NEIGHBOUR 4 // Multiple of 2
-#define MEASURE
+// #define MEASURE
 #define PRINT
 /* ---------- */
 
@@ -72,12 +72,12 @@ int main() {
 	#ifdef MEASURE
 	clock_t end = clock();
 	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("\ntime spent is : %.9lf\n\n", time_spent);
+	printf("\ntime spent is : %.9lf\n", time_spent);
 	#endif
 /* ---------------------------------------- */
 
 	#ifdef PRINT
-	print_matrix("output", out, NUMBER_OF_PARTITION, NUMBER_OF_PARTITION);
+	print_matrix("\noutput", out, NUMBER_OF_PARTITION, NUMBER_OF_PARTITION);
 	#endif
 
 	int i;

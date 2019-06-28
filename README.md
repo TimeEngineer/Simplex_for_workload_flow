@@ -32,7 +32,7 @@ Where :
 
 - `X` is a vector of normalized value of the partition
 
-- `B` is a matrix of boundary to know where are the neighbours of each partition
+- `B` is a matrix of boundary to know where are the neighbors of each partition
 
 - `n` is the number of partition (lenght of X and B)
 
