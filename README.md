@@ -34,7 +34,7 @@ Where :
 
 - `B` is a matrix of boundary to know where are the neighbors of each partition
 
-- `n` is the number of partition (lenght of X and B)
+- `n` is the number of partition (length of X and B)
 
 Also there is a test included where you can choose your parameters.
 
